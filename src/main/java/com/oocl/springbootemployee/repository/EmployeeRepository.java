@@ -42,4 +42,17 @@ public class EmployeeRepository {
                 .filter(employee -> Objects.equals(gender, employee.getGender()))
                 .collect(Collectors.toList());
     }
+
+    public Employee update(Employee updateEmployee) {
+        Employee targetEmployee = employees.stream()
+                .filter(employee -> Objects.equals(updateEmployee.getId(), employee.getId()))
+                .findFirst()
+                .orElse(null);
+        if (Objects.isNull(targetEmployee)) {
+            return null;
+        }
+        targetEmployee.setAge(updateEmployee.getAge());
+        targetEmployee.setSalary(updateEmployee.getSalary());
+        return targetEmployee;
+    }
 }

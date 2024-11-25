@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.hasSize;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
+import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -90,5 +91,25 @@ class SpringBootEmployeeTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(givenEmployeeObject.getGender().name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenEmployeeObject.getSalary()))
                 ;
+    }
+
+    @Test
+    public void should_update_employee_age_salary_when_put_given_age_21_salary_7000() throws Exception {
+        // Given
+        String newEmployee = " {\n" +
+                "        \"id\": 7,\n" +
+                "        \"age\": 21,\n" +
+                "        \"salary\": 7000.0\n" +
+                "    }";
+        Employee givenEmployeeObject = jsonObject.parseObject(newEmployee);
+        // When
+        client.perform(MockMvcRequestBuilders.put("/employees")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(newEmployee))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(givenEmployeeObject.getAge()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenEmployeeObject.getSalary()))
+        ;
+        // Then
     }
 }
