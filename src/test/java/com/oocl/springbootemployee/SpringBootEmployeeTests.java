@@ -2,6 +2,7 @@ package com.oocl.springbootemployee;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
@@ -70,7 +71,6 @@ class SpringBootEmployeeTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(Gender.FEMALE.name()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(8000))
                 .andReturn().getResponse().getContentAsString();
-
     }
 
     @Test
@@ -119,5 +119,17 @@ class SpringBootEmployeeTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenEmployeeObject.getSalary()))
         ;
         // Then
+    }
+
+    @Test
+    public void should_remove_employee_when_delete_given_employee_id() throws Exception {
+        // Given
+        int employeeId = 0;
+        // When
+        client.perform(MockMvcRequestBuilders.delete("/employees/" + employeeId))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+        // Then
+        assertThat(employeeRepository.getAll().size()).isEqualTo(2);
+        assertNull(employeeRepository.getEmployeeById(employeeId));
     }
 }

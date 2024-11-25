@@ -17,7 +17,6 @@ public class EmployeeRepository {
         employees.add(new Employee(0, "Lily", 20, Gender.FEMALE, 8000));
         employees.add(new Employee(1, "Tom", 21, Gender.MALE, 9000));
         employees.add(new Employee(2, "Jacky", 19, Gender.MALE, 7000));
-        //command +d
     }
 
     public List<Employee> getAll() {
@@ -25,8 +24,8 @@ public class EmployeeRepository {
     }
 
     public Employee getEmployeeById(Integer id) {
-        return employees.stream().
-                filter(employee -> employee.getId().equals(id))
+        return employees.stream()
+                .filter(employee -> employee.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -54,5 +53,9 @@ public class EmployeeRepository {
         targetEmployee.setAge(updateEmployee.getAge());
         targetEmployee.setSalary(updateEmployee.getSalary());
         return targetEmployee;
+    }
+
+    public void deleteEmployee(Integer id) {
+        employees.removeIf(employee -> Objects.equals(id, employee.getId()));
     }
 }
