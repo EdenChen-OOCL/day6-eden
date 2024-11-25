@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeRepository;
-import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
