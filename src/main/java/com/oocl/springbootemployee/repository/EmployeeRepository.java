@@ -2,12 +2,11 @@ package com.oocl.springbootemployee.repository;
 
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class EmployeeRepository {
@@ -31,10 +30,6 @@ public class EmployeeRepository {
                 .findFirst()
                 .orElse(null);
     }
-
-//    public Employee findByGender(Gender gender) {
-//        return employees.stream().c
-//    }
 
     public Employee save(Employee employee) {
         employee.setId(employees.size());
