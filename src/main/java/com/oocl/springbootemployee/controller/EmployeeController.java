@@ -23,11 +23,18 @@ public class EmployeeController {
         return employeeRepository.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Employee getById(@PathVariable Integer id) {
+        return employeeRepository.getEmployeeById(id);
+    }
+
+
     @GetMapping(params = {"gender"})
     public List<Employee> getByGender(@RequestParam Gender gender) {
 
         return employeeRepository.findByGender(gender);
     }
+
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)

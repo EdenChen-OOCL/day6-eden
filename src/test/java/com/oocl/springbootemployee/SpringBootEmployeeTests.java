@@ -55,12 +55,19 @@ class SpringBootEmployeeTests {
     }
 
     @Test
-    public void should_should_return_a_employee_when_employeeController_given_employee_id_1() {
+    public void should_should_return_a_employee_when_get_by_id_given_employee_id_1() throws Exception {
         // Given
-
+        Employee expectEmployee = employeeRepository.getAll().get(0);
         // When
-
         // Then
+        client.perform(MockMvcRequestBuilders.get("/employees/" + 5))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(Gender.FEMALE.name()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(8000))
+                .andReturn().getResponse().getContentAsString();
+
     }
 
     @Test
@@ -77,11 +84,7 @@ class SpringBootEmployeeTests {
                         .param("gender", "FEMALE"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$").isNotEmpty())
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].gender").value(Gender.FEMALE.name()))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(Gender.FEMALE))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(8000));
         ;
     }
 }
