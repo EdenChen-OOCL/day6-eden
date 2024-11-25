@@ -56,4 +56,8 @@ public class Employee {
     public int hashCode() {
         return Objects.hash(id, name, age, gender, salary);
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
