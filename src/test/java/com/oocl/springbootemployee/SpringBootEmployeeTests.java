@@ -132,4 +132,32 @@ class SpringBootEmployeeTests {
         assertThat(employeeRepository.getAll().size()).isEqualTo(2);
         assertNull(employeeRepository.getEmployeeById(employeeId));
     }
+
+    @Test
+    public void should_page_query_employee_when_get_all_given_page_and_page_size() throws Exception {
+        // Given
+        List<Employee> expectEmployees = List.of(
+                new Employee(0, "Lily", 20, Gender.FEMALE, 8000),
+                new Employee(1, "Tom", 21, Gender.MALE, 9000),
+                new Employee(2, "Jacky", 19, Gender.MALE, 7000),
+                new Employee(3, "Jacky", 19, Gender.MALE, 7000),
+                new Employee(4, "Jacky", 19, Gender.MALE, 7000)
+        );
+        for (int i = 3; i < 10; i++) {
+            employeeRepository.save(new Employee(i, "Jacky", 19, Gender.MALE, 7000));
+        }
+        int pageIndex = 1;
+        int pageSize = 5;
+        // When
+        String responseBody = client.perform(MockMvcRequestBuilders.get("/employees")
+                .param("pageIndex", String.valueOf(pageIndex))
+                .param("pageSize", String.valueOf(pageSize)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        // Then
+        List<Employee> resultEmployee = json.parseObject(responseBody);
+
+        assertThat(resultEmployee).hasSize(pageSize);
+        assertThat(expectEmployees).isEqualTo(resultEmployee);
+    }
 }

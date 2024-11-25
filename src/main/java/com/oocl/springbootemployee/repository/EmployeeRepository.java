@@ -58,4 +58,11 @@ public class EmployeeRepository {
     public void deleteEmployee(Integer id) {
         employees.removeIf(employee -> Objects.equals(id, employee.getId()));
     }
+
+    public List<Employee> getByPage(Integer page, Integer pageSize) {
+        return employees.stream()
+                .skip((long) (page - 1) * pageSize)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+    }
 }
