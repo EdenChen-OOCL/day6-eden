@@ -9,8 +9,6 @@ public class Employee {
     private Gender gender;
     private double salary;
 
-    //alt + insert
-    //command + n  > generate
     public Employee(Integer id, String name, Integer age, Gender gender, double salary) {
         this.id = id;
         this.name = name;

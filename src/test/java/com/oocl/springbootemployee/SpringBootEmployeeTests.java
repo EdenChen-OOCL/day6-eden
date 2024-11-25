@@ -34,6 +34,13 @@ class SpringBootEmployeeTests {
     @Autowired
     private JacksonTester<Employee> jsonObject;
 
+    @BeforeEach
+    void setUp() {
+        employeeRepository.getAll().clear();
+        employeeRepository.save(new Employee(0, "Lily", 20, Gender.FEMALE, 8000));
+        employeeRepository.save(new Employee(1, "Tom", 21, Gender.MALE, 9000));
+        employeeRepository.save(new Employee(2, "Jacky", 19, Gender.MALE, 7000));
+    }
 
     @Test
     public void should_get_employee_list_when_call_get_all_given_no_parameter() throws Exception {
@@ -43,6 +50,7 @@ class SpringBootEmployeeTests {
         // when
         String responseBody = client.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
                 .andReturn().getResponse().getContentAsString();
         // then
         List<Employee> resultEmployee = json.parseObject(responseBody);
@@ -50,12 +58,12 @@ class SpringBootEmployeeTests {
     }
 
     @Test
-    public void should_should_return_a_employee_when_get_by_id_given_employee_id_1() throws Exception {
+    public void should_should_return_a_employee_when_get_by_id_given_employee_id_0() throws Exception {
         // Given
         Employee expectEmployee = employeeRepository.getAll().get(0);
         // When
         // Then
-        client.perform(MockMvcRequestBuilders.get("/employees/" + 5))
+        client.perform(MockMvcRequestBuilders.get("/employees/" + 0))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Lily"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(20))
@@ -97,7 +105,7 @@ class SpringBootEmployeeTests {
     public void should_update_employee_age_salary_when_put_given_age_21_salary_7000() throws Exception {
         // Given
         String newEmployee = " {\n" +
-                "        \"id\": 7,\n" +
+                "        \"id\": 0,\n" +
                 "        \"age\": 21,\n" +
                 "        \"salary\": 7000.0\n" +
                 "    }";
